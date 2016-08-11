@@ -32,7 +32,7 @@ var util = require('util');
 var webdriver = require('selenium-webdriver');
 
 var CHROME_FLAGS = [
-    '--disable-fre', '--enable-benchmarking', '--metrics-recording-only'
+    '--disable-fre', '--enable-benchmarking', '--metrics-recording-only', '--user-data-dir=/source/tmp'
   ];
 
 
@@ -109,11 +109,11 @@ BrowserLocalChrome.prototype.startBrowser = function() {
   'use strict';
   // TODO(klm): clean profile, see how ChromeDriver does it.
   var flags = CHROME_FLAGS;
-  flags.push('-remote-debugging-port=' + this.devToolsPort_);
+  flags.push('--remote-debugging-port=' + this.devToolsPort_);
   if (this.task_.ignoreSSL) {
     flags.push('--ignore-certificate-errors');
   }
-  this.startChildProcess(this.chrome_ || 'chrome', flags, 'Chrome');
+  this.startChildProcess(this.chrome_ || 'google-chrome', flags, 'Chrome');
   // Make sure we set devToolsUrl_ only after the child process start success.
   this.app_.schedule('Set DevTools URL', function() {
     this.devToolsUrl_ = 'http://localhost:' + this.devToolsPort_ + '/json';
